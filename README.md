@@ -21,7 +21,6 @@ This project is a Docker-based solution that wraps **Gitleaks**, an open-source 
 
 ## **Setup Instructions**
 
-### **Building the Docker Image**
 1. Clone this repository:
    ```bash
    git clone <repository-url>
@@ -39,7 +38,7 @@ This project is a Docker-based solution that wraps **Gitleaks**, an open-source 
 
 To scan the current directory and process the results:
    ```bash
-   docker run --rm -v "$(pwd):/code" gitleaks-python gitleaks detect --no-git --report-path /code/<name of output file>.json /code
+   docker run --rm -v "$(pwd):/code" gitleaks-python gitleaks detect --no-git --report-path /code/<name-of-output-file>.json /code
    ```
 
 
