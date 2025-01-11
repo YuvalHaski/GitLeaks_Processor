@@ -1,9 +1,9 @@
 import json
+import sys
 
 from pydantic import BaseModel, ValidationError
 
 from utils.error_handling import ErrorHandler
-# from utils.error_handling import save_error_to_file
 from utils.logger import logger
 
 error_handler = ErrorHandler()
@@ -21,16 +21,20 @@ class Output(BaseModel):
 
 def transform_gitleaks_output(raw_data):
     """Transform Gitleaks JSON output to the required format."""
-    logger.info("Transforming Gitleaks findings...")
-    findings = [
-        Finding(
-            filename=finding["File"],
-            line_range=f"{finding['StartLine']}-{finding['EndLine']}",
-            description=finding["Description"],
-        )
-        for finding in raw_data
-    ]
-    return Output(findings=findings)
+    logger.info("Transforming Gitleaks raw result to new format...")
+    try:
+        findings = [
+            Finding(
+                filename=finding["File"],
+                line_range=f"{finding['StartLine']}-{finding['EndLine']}",
+                description=finding["Description"],
+            )
+            for finding in raw_data
+        ]
+        return Output(findings=findings)
+    except KeyError as e:
+        error_handler.handle_error(e, 2, f"KeyError: Missing key {e} in finding.")
+        sys.exit(2)
 
 
 def process_gitleaks_result(input_path, output_path):

@@ -1,4 +1,3 @@
-
 import subprocess
 import sys
 
@@ -6,8 +5,6 @@ from utils.error_handling import ErrorHandler, CommandErrorExc
 from utils import ERROR_KEYWORDS
 from utils.logger import logger
 from transform import process_gitleaks_result
-
-Secret = "60f41f67-b43b-4552-bb80-f2f29b861ef0"
 
 error_handler = ErrorHandler()
 
@@ -21,7 +18,6 @@ def run_command(command, allowed_exit_codes=(0, 1)):
         stderr=subprocess.PIPE,
         text=True,
     )
-    print('hehrehehehre', process.stderr)
 
     if process.returncode not in allowed_exit_codes or any(keyword in process.stderr for keyword in ERROR_KEYWORDS):
         error_message = error_handler.extract_errors(process.stderr).splitlines()[0].strip()
@@ -61,11 +57,15 @@ def execute_tool(args, transform_function, raw_output_file, formatted_output_fil
 
 
 def main():
-    args = sys.argv[1:]
-    raw_output_file = parse_arguments(args)
-    formatted_output_file = "/code/formatted_output.json"
+    try:
+        args = sys.argv[1:]
+        raw_output_file = parse_arguments(args)
+        formatted_output_file = "/code/formatted_output.json"
 
-    execute_tool(args, process_gitleaks_result, raw_output_file, formatted_output_file)
+        execute_tool(args, process_gitleaks_result, raw_output_file, formatted_output_file)
+    except Exception as e:
+        error_handler.handle_error(e, 2, f"Unexpected error: {e}")
+        sys.exit(2)
 
 
 if __name__ == "__main__":
