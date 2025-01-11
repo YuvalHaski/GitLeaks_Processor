@@ -31,6 +31,3 @@ A Dockerized Python application that integrates [Gitleaks](https://github.com/zr
 ### **Build the Docker Image**
    ```bash
     docker build -t gitleaks-python .
-
-
-
