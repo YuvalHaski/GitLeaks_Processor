@@ -56,11 +56,10 @@ def execute_tool(args, transform_function, raw_output_file, formatted_output_fil
         sys.exit(2)
 
 
-def main():
+def main(formatted_output_file="/code/formatted_output.json"):
     try:
         args = sys.argv[1:]
         raw_output_file = parse_arguments(args)
-        formatted_output_file = "/code/formatted_output.json"
 
         execute_tool(args, process_gitleaks_result, raw_output_file, formatted_output_file)
     except Exception as e:

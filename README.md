@@ -1,33 +1,46 @@
-
 # **Gitleaks Processor**
 
-A Dockerized Python application that integrates [Gitleaks](https://github.com/zricethezav/gitleaks), a secret-detection tool, with advanced error handling and result transformation capabilities. This project allows you to scan Git repositories for secrets and outputs the findings in a structured JSON format.
+### **Overview**
+This project is a Docker-based solution that wraps **Gitleaks**, an open-source secret-detection tool, with a Python script to process its output into a structured JSON format. The goal is to simplify secret detection by providing clear, actionable, and well-formatted results.
 
 ---
 
-## **Features**
-- **Flexible Command Support:** Pass Gitleaks-compatible commands to customize scanning behavior.
-- **Error Handling:** Comprehensive error detection and logging for runtime issues.
-- **Result Transformation:** Converts Gitleaks raw JSON output into a structured format.
-- **Dockerized Environment:** Ensures reproducibility and easy setup.
+### **Features**
+- **Secret Detection**: Utilizes Gitleaks to scan repositories for potential secrets.
+- **Output Transformation**: Converts Gitleaks raw JSON output into a structured format.
+- **Error Handling**: Outputs structured error messages when issues occur.
+- **Dockerized Workflow**: Enables seamless usage through a Docker container that integrates Gitleaks and Python.
 - **Log Management:** Maintains detailed logs for debugging and audit purposes.
 
 ---
 
-## **Getting Started**
-
 ### **Prerequisites**
 - [Docker](https://docs.docker.com/get-docker/) installed on your system.
-- A Git repository to scan, either locally cloned or accessible via URL.
 
 ---
 
-### **Installation**
+## **Setup Instructions**
+
+### **Building the Docker Image**
 1. Clone this repository:
    ```bash
    git clone <repository-url>
    cd <repository-directory>
+   ```
 
-### **Build the Docker Image**
+2. Build the Docker Image
    ```bash
     docker build -t gitleaks-python .
+   ```
+
+---
+
+## **Running the Docker Container**
+
+To scan the current directory and process the results:
+   ```bash
+   docker run --rm -v "$(pwd):/code" gitleaks-python gitleaks detect --no-git --report-path /code/<name of output file>.json /code
+   ```
+
+
+
