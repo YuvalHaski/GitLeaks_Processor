@@ -16,11 +16,11 @@ FROM python-base AS final-image
 # Copy the necessary files
 COPY --from=gitleaks-base /usr/bin/gitleaks /usr/bin/gitleaks
 COPY transform.py /code/transform.py
-COPY gitleaks_proccessor.py /code/gitleaks_proccessor.py
+COPY gitleaks_processor.py /code/gitleaks_processor.py
 COPY utils/ /code/utils/
 
 # Set working directory
 WORKDIR /code
 
 # Set the Python script as the entry point
-ENTRYPOINT ["python", "/code/gitleaks_proccessor.py"]
+ENTRYPOINT ["python", "/code/gitleaks_processor.py"]
