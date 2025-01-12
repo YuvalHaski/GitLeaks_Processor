@@ -18,6 +18,12 @@ class CommandErrorExc(Exception):
 
 
 class ErrorHandler:
+    """
+    A utility class to handle errors:
+    - Logs error messages.
+    - Extracts meaningful details from error output.
+    - Saves errors in a structured JSON format to a specified file.
+    """
     def __init__(self, formatted_output_file="/code/formatted_output.json"):
         self.formatted_output_file = formatted_output_file
         self.logger = logger
@@ -27,20 +33,17 @@ class ErrorHandler:
         ansi_escape_pattern = re.compile(r'\x1b\[[0-9;]*m')
         return ansi_escape_pattern.sub('', error_message)
 
-    def handle_error(self, error, exit_code: int, custom_message=None, raise_error=False):
-        error_message = custom_message or str(error)
+    def handle_error(self, error, exit_code: int, custom_message=None):
+        error_message = custom_message or str(error)  # use custom message if provided.
         self.logger.error(f"Error occurred: {error_message}")
         self.save_error_to_file(exit_code, error_message)
 
-        if raise_error:
-            raise error
-
     def extract_errors(self, error_message: str) -> str:
-        cleaned_message = self.clean_message(error_message)
+        cleaned_message = self.clean_message(error_message)  # remove ANSI escape codes.
         extracted_lines = [
-            line.split(keyword, 1)[1].strip()
+            line.split(keyword, 1)[1].strip()  # extract message after keyword.
             for line in cleaned_message.splitlines()
-            for keyword in ERROR_KEYWORDS
+            for keyword in ERROR_KEYWORDS  # match against specified error keywords.
             if keyword in line
         ]
         return "\n".join(extracted_lines) if extracted_lines else cleaned_message
