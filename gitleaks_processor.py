@@ -31,7 +31,7 @@ def parse_arguments(args, flag="--report-path", default_value="/code/output.json
     """Parse a specific argument from the command-line arguments."""
     if flag in args:
         idx = args.index(flag)
-        if idx + 1 < len(args):
+        if idx + 1 <= len(args):
             return args[idx + 1]
     args += [flag, default_value]
     return default_value
